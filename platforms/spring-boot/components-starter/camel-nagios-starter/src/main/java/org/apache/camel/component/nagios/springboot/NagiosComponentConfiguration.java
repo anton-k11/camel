@@ -17,9 +17,12 @@
 package org.apache.camel.component.nagios.springboot;
 
 import javax.annotation.Generated;
-import com.googlecode.jsendnsca.core.NagiosSettings;
+import com.googlecode.jsendnsca.NagiosSettings;
+import com.googlecode.jsendnsca.encryption.Encryption;
 import org.apache.camel.component.nagios.NagiosEncryptionMethod;
+import org.apache.camel.spring.boot.ComponentConfigurationPropertiesCommon;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**
@@ -29,7 +32,9 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
  */
 @Generated("org.apache.camel.maven.packaging.SpringBootAutoConfigurationMojo")
 @ConfigurationProperties(prefix = "camel.component.nagios")
-public class NagiosComponentConfiguration {
+public class NagiosComponentConfiguration
+        extends
+            ComponentConfigurationPropertiesCommon {
 
     /**
      * To use a shared NagiosConfiguration
@@ -86,8 +91,15 @@ public class NagiosComponentConfiguration {
         private String password;
         /**
          * To specify an encryption method.
+         * 
+         * @deprecated use the {@link #encryption} query parameter instead.
          */
+        @Deprecated
         private NagiosEncryptionMethod encryptionMethod;
+        /**
+         * To specify an encryption method.
+         */
+        private Encryption encryption;
 
         public NagiosSettings getNagiosSettings() {
             return nagiosSettings;
@@ -137,12 +149,23 @@ public class NagiosComponentConfiguration {
             this.password = password;
         }
 
+        @Deprecated
+        @DeprecatedConfigurationProperty
         public NagiosEncryptionMethod getEncryptionMethod() {
             return encryptionMethod;
         }
 
+        @Deprecated
         public void setEncryptionMethod(NagiosEncryptionMethod encryptionMethod) {
             this.encryptionMethod = encryptionMethod;
+        }
+
+        public Encryption getEncryption() {
+            return encryption;
+        }
+
+        public void setEncryption(Encryption encryption) {
+            this.encryption = encryption;
         }
     }
 }

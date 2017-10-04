@@ -52,7 +52,7 @@
     <compiler.fork>false</compiler.fork>
 
     <maven-compiler-plugin-version>3.6.1</maven-compiler-plugin-version>
-    <maven-surefire-plugin-version>2.19.1</maven-surefire-plugin-version>
+    <maven-surefire-plugin-version>2.20.1</maven-surefire-plugin-version>
 
     <!-- eclipse plugin need the jaxb in this pom.xml file -->
     <!-- Make sure to keep JAXB version up to date in parent/pom.xml in the bottom of the file -->
@@ -60,7 +60,7 @@
     <errorprone-version>2.5</errorprone-version>
     <mycila-license-version>3.0</mycila-license-version>
     <gmavenplus-plugin-version>1.5</gmavenplus-plugin-version>
-    <groovy-version>2.4.11</groovy-version>
+    <groovy-version>2.4.12</groovy-version>
   </properties>
 
   <mailingLists>
@@ -140,6 +140,7 @@
   <modules>
     <module>parent</module>
     <module>etc</module>
+    <module>bom</module>
     <module>buildingtools</module>
     <module>camel-core</module>
     <module>components</module>
@@ -190,29 +191,12 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
-          <version>2.10.4</version>
+          <version>3.0.0-M1</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-eclipse-plugin</artifactId>
           <version>2.10</version>
-          <dependencies>
-            <dependency>
-              <groupId>org.apache.camel</groupId>
-              <artifactId>camel-buildtools</artifactId>
-              <version>${project.version}</version>
-            </dependency>
-          </dependencies>
-          <configuration>
-            <downloadSources>true</downloadSources>
-            <downloadJavadocs>false</downloadJavadocs>
-          </configuration>
-        </plugin>
-
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-idea-plugin</artifactId>
-          <version>2.2.1</version>
           <dependencies>
             <dependency>
               <groupId>org.apache.camel</groupId>
@@ -247,6 +231,8 @@
                 <exclude>**/*.sh</exclude>
                 <exclude>**/*.bat</exclude>
                 <exclude>**/java9-maven-settings</exclude>
+                <!-- tooling json-simple parser -->
+                <exclude>**/src/main/java/org/json/simple/**</exclude>
                 <!-- tooling/camel-manual/src/styles/print.css use a different license -->
                 <exclude>**/src/styles/print.css</exclude>
                 <!-- tooling for component docs -->
@@ -284,6 +270,7 @@
                 <exclude>**/src/main/resources/META-INF/MANIFEST.MF</exclude>
                 <!-- examples -->
                 <exclude>**/fabric8/*.yaml</exclude>
+                <exclude>**/src/main/resources/consul/services.json</exclude>
                 <!-- generated files -->
                 <exclude>**/target/**/*</exclude>
                 <exclude>**/eclipse-classes/**/*</exclude>

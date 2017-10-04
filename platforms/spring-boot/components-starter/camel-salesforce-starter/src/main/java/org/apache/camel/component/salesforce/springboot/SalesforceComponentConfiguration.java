@@ -31,6 +31,7 @@ import org.apache.camel.component.salesforce.api.dto.bulk.ContentType;
 import org.apache.camel.component.salesforce.internal.PayloadFormat;
 import org.apache.camel.component.salesforce.internal.dto.NotifyForFieldsEnum;
 import org.apache.camel.component.salesforce.internal.dto.NotifyForOperationsEnum;
+import org.apache.camel.spring.boot.ComponentConfigurationPropertiesCommon;
 import org.apache.camel.util.jsse.KeyStoreParameters;
 import org.apache.camel.util.jsse.SSLContextParameters;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -44,7 +45,9 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
  */
 @Generated("org.apache.camel.maven.packaging.SpringBootAutoConfigurationMojo")
 @ConfigurationProperties(prefix = "camel.component.salesforce")
-public class SalesforceComponentConfiguration {
+public class SalesforceComponentConfiguration
+        extends
+            ComponentConfigurationPropertiesCommon {
 
     /**
      * Explicit authentication method to be used one of USERNAME_PASSWORD
@@ -562,6 +565,12 @@ public class SalesforceComponentConfiguration {
          */
         private PayloadFormat format;
         /**
+         * Use raw payload {@link String} for request and response (either JSON
+         * or XML depending on {@code format} ), instead of DTOs, false by
+         * default
+         */
+        private Boolean rawPayload = false;
+        /**
          * Salesforce API version, defaults to
          * SalesforceEndpointConfig.DEFAULT_VERSION
          */
@@ -787,6 +796,14 @@ public class SalesforceComponentConfiguration {
 
         public void setFormat(PayloadFormat format) {
             this.format = format;
+        }
+
+        public Boolean getRawPayload() {
+            return rawPayload;
+        }
+
+        public void setRawPayload(Boolean rawPayload) {
+            this.rawPayload = rawPayload;
         }
 
         public String getApiVersion() {

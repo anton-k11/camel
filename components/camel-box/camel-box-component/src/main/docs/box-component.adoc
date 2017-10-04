@@ -1,4 +1,4 @@
-## Box Component
+== Box Component
 
 *Available as of Camel version 2.14*
 
@@ -52,55 +52,57 @@ The Box component supports 2 options which are listed below.
 
 
 [width="100%",cols="2,5,^1,2",options="header"]
-|=======================================================================
+|===
 | Name | Description | Default | Type
-| **configuration** (common) | To use the shared configuration |  | BoxConfiguration
-| **resolveProperty Placeholders** (advanced) | Whether the component should resolve property placeholders on itself when starting. Only properties which are of String type can use property placeholders. | true | boolean
-|=======================================================================
+| *configuration* (common) | To use the shared configuration |  | BoxConfiguration
+| *resolveProperty Placeholders* (advanced) | Whether the component should resolve property placeholders on itself when starting. Only properties which are of String type can use property placeholders. | true | boolean
+|===
 // component options: END
 
 // endpoint options: START
 The Box endpoint is configured using URI syntax:
 
-    box:apiName/methodName
+----
+box:apiName/methodName
+----
 
 with the following path and query parameters:
 
-#### Path Parameters (2 parameters):
+==== Path Parameters (2 parameters):
 
 [width="100%",cols="2,5,^1,2",options="header"]
-|=======================================================================
+|===
 | Name | Description | Default | Type
-| **apiName** | *Required* What kind of operation to perform |  | BoxApiName
-| **methodName** | *Required* What sub operation to use for the selected operation |  | String
-|=======================================================================
+| *apiName* | *Required* What kind of operation to perform |  | BoxApiName
+| *methodName* | *Required* What sub operation to use for the selected operation |  | String
+|===
 
-#### Query Parameters (20 parameters):
+==== Query Parameters (20 parameters):
 
 [width="100%",cols="2,5,^1,2",options="header"]
-|=======================================================================
+|===
 | Name | Description | Default | Type
-| **clientId** (common) | Box application client ID |  | String
-| **enterpriseId** (common) | The enterprise ID to use for an App Enterprise. |  | String
-| **inBody** (common) | Sets the name of a parameter to be passed in the exchange In Body |  | String
-| **userId** (common) | The user ID to use for an App User. |  | String
-| **bridgeErrorHandler** (consumer) | Allows for bridging the consumer to the Camel routing Error Handler which mean any exceptions occurred while the consumer is trying to pickup incoming messages or the likes will now be processed as a message and handled by the routing Error Handler. By default the consumer will use the org.apache.camel.spi.ExceptionHandler to deal with exceptions that will be logged at WARN or ERROR level and ignored. | false | boolean
-| **exceptionHandler** (consumer) | To let the consumer use a custom ExceptionHandler. Notice if the option bridgeErrorHandler is enabled then this options is not in use. By default the consumer will deal with exceptions that will be logged at WARN or ERROR level and ignored. |  | ExceptionHandler
-| **exchangePattern** (consumer) | Sets the exchange pattern when the consumer creates an exchange. |  | ExchangePattern
-| **httpParams** (advanced) | Custom HTTP params for settings like proxy host |  | Map
-| **synchronous** (advanced) | Sets whether synchronous processing should be strictly used or Camel is allowed to use asynchronous processing (if supported). | false | boolean
-| **accessTokenCache** (security) | Custom Access Token Cache for storing and retrieving access tokens. |  | IAccessTokenCache
-| **clientSecret** (security) | Box application client secret |  | String
-| **encryptionAlgorithm** (security) | The type of encryption algorithm for JWT. Supported Algorithms: RSA_SHA_256 RSA_SHA_384 RSA_SHA_512 | RSA_SHA_256 | EncryptionAlgorithm
-| **maxCacheEntries** (security) | The maximum number of access tokens in cache. | 100 | int
-| **authenticationType** (authentication) | The type of authentication for connection. Types of Authentication: STANDARD_AUTHENTICATION - OAuth 2.0 (3-legged) SERVER_AUTHENTICATION - OAuth 2.0 with JSON Web Tokens | APP_USER_AUTHENTICATION | String
-| **privateKeyFile** (security) | The private key for generating the JWT signature. |  | String
-| **privateKeyPassword** (security) | The password for the private key. |  | String
-| **publicKeyId** (security) | The ID for public key for validating the JWT signature. |  | String
-| **sslContextParameters** (security) | To configure security using SSLContextParameters. |  | SSLContextParameters
-| **userName** (security) | Box user name MUST be provided |  | String
-| **userPassword** (security) | Box user password MUST be provided if authSecureStorage is not set or returns null on first call |  | String
-|=======================================================================
+| *clientId* (common) | Box application client ID |  | String
+| *enterpriseId* (common) | The enterprise ID to use for an App Enterprise. |  | String
+| *inBody* (common) | Sets the name of a parameter to be passed in the exchange In Body |  | String
+| *userId* (common) | The user ID to use for an App User. |  | String
+| *bridgeErrorHandler* (consumer) | Allows for bridging the consumer to the Camel routing Error Handler which mean any exceptions occurred while the consumer is trying to pickup incoming messages or the likes will now be processed as a message and handled by the routing Error Handler. By default the consumer will use the org.apache.camel.spi.ExceptionHandler to deal with exceptions that will be logged at WARN or ERROR level and ignored. | false | boolean
+| *exceptionHandler* (consumer) | To let the consumer use a custom ExceptionHandler. Notice if the option bridgeErrorHandler is enabled then this options is not in use. By default the consumer will deal with exceptions that will be logged at WARN or ERROR level and ignored. |  | ExceptionHandler
+| *exchangePattern* (consumer) | Sets the exchange pattern when the consumer creates an exchange. |  | ExchangePattern
+| *httpParams* (advanced) | Custom HTTP params for settings like proxy host |  | Map
+| *synchronous* (advanced) | Sets whether synchronous processing should be strictly used or Camel is allowed to use asynchronous processing (if supported). | false | boolean
+| *accessTokenCache* (security) | Custom Access Token Cache for storing and retrieving access tokens. |  | IAccessTokenCache
+| *clientSecret* (security) | Box application client secret |  | String
+| *encryptionAlgorithm* (security) | The type of encryption algorithm for JWT. Supported Algorithms: RSA_SHA_256 RSA_SHA_384 RSA_SHA_512 | RSA_SHA_256 | EncryptionAlgorithm
+| *maxCacheEntries* (security) | The maximum number of access tokens in cache. | 100 | int
+| *authenticationType* (authentication) | The type of authentication for connection. Types of Authentication: STANDARD_AUTHENTICATION - OAuth 2.0 (3-legged) SERVER_AUTHENTICATION - OAuth 2.0 with JSON Web Tokens | APP_USER_AUTHENTICATION | String
+| *privateKeyFile* (security) | The private key for generating the JWT signature. |  | String
+| *privateKeyPassword* (security) | The password for the private key. |  | String
+| *publicKeyId* (security) | The ID for public key for validating the JWT signature. |  | String
+| *sslContextParameters* (security) | To configure security using SSLContextParameters. |  | SSLContextParameters
+| *userName* (security) | Box user name MUST be provided |  | String
+| *userPassword* (security) | Box user password MUST be provided if authSecureStorage is not set or returns null on first call |  | String
+|===
 // endpoint options: END
 
 ### URI format
@@ -183,7 +185,6 @@ follows:
 |updateCollaborationInfo |updateInfo |collaborationId, info |com.box.sdk.BoxCollaboration
 |=======================================================================
 
-[[Box-URIOptionsforcollaborations]]
 URI Options for _collaborations_
 
 
@@ -233,7 +234,6 @@ follows:
 |replyToComment |reply |commentId, message |com.box.sdk.BoxComment
 |=======================================================================
 
-[[Box-URIOptionsforcollaborations]]
 URI Options for _collaborations_
 
 
@@ -267,7 +267,6 @@ The following endpoints can be invoked with the prefix *`events`* as follows:
 |getEnterpriseEvents |events |position, after, before, [types] |java.util.List
 |=======================================================================
 
-[[Box-URIOptionsforevent-logs]]
 URI Options for _event-logs_
 
 [width="100%",cols="10%,90%",options="header"]
@@ -342,7 +341,6 @@ prefix *`files`* as follows.
 |getFileThumbnail |thumbnail |fileId, fileType, minWidth, minHeight, maxWidth, maxHeight |byte[]
 |=======================================================================
 
-[[Box-URIOptionsforfiles]]
 URI Options for _files_
 
 [width="100%",cols="10%,90%",options="header"]
@@ -443,7 +441,6 @@ The following endpoints can be invoked with the prefix
 |updateFolderInfo |updateInfo |folderId, info |com.box.sdk.BoxFolder
 |=======================================================================
 
-[[Box-URIOptionsforfolders]]
 URI Options for _folders_
 
 [width="100%",cols="10%,90%",options="header"]
@@ -505,6 +502,8 @@ follows:
 
 |getGroupInfo |info |groupId |com.box.sdk.BoxGroup.Info
 
+|updateGroupInfo |updateInfo |groupId, groupInfo |com.box.sdk.BoxGroup
+
 |addGroupMembership |addMembership |groupId, userId, role |com.box.sdk.BoxGroupMembership
 
 |deleteGroupMembership |deleteMembership |groupMembershipId |
@@ -516,7 +515,6 @@ follows:
 |updateGroupMembershipInfo |updateMembershipInfo |groupMemebershipId, info |com.box.sdk.BoxGroupMembership
 |=======================================================================
 
-[[Box-URIOptionsforgroups]]
 URI Options for _groups_
 
 [width="100%",cols="10%,90%",options="header"]
@@ -556,7 +554,6 @@ follows:
 |searchFolder |search |folderId, query |java.util.Collection
 |=======================================================================
 
-[[Box-URIOptionsforsearch]]
 URI Options for _search_
 
 [width="100%",cols="10%,90%",options="header"]
@@ -603,7 +600,6 @@ follows:
 |getTaskAssignmentInfo |assignmentInfo |taskAssignmentId |com.box.sdk.BoxTaskAssignment.Info
 |=======================================================================
 
-[[Box-URIOptionsfortasks]]
 URI Options for _tasks_
 
 [width="100%",cols="10%,90%",options="header"]
@@ -660,9 +656,10 @@ follows:
 |getUserInfo |info  | userId |com.box.sdk.BoxUser.Info
 
 |updateUserInfo |updateInfo |userId, info |com.box.sdk.BoxUser
+
+|moveFolderToUser |- |userId, sourceUserId |com.box.sdk.BoxFolder.Info
 |=======================================================================
 
-[[Box-URIOptionsforusers]]
 URI Options for _users_
 
 [width="100%",cols="10%,90%",options="header"]
@@ -709,7 +706,6 @@ shown in the example next.
 |events |  |[startingPosition] |com.box.sdk.BoxEvent 
 |=======================================================================
 
-[[Box-URIOptionsforevents]]
 URI Options for _events_
 
 [width="100%",cols="10%,90%",options="header",]

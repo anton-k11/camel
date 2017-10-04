@@ -61,11 +61,14 @@ final class ConnectorModel {
     private DataType outputDataType;
     private Map<String, String> defaultComponentOptions;
     private Map<String, String> defaultEndpointOptions;
+    private List<String> endpointOptions;
+    private List<String> componentOptions;
+    private List<String> connectorOptions;
 
-    ConnectorModel(String componentName, String className) {
+    ConnectorModel(String componentName, Class<?> componentClass) {
         this.componentName = componentName;
-        this.className = className;
-        this.lines = Suppliers.memorize(() -> findCamelConnectorJSonSchema());
+        this.className = componentClass.getName();
+        this.lines = Suppliers.memorize(() -> findCamelConnectorJSonSchema(componentClass));
     }
 
     public String getComponentName() {
@@ -132,6 +135,30 @@ final class ConnectorModel {
         return defaultEndpointOptions;
     }
 
+    public List<String> getEndpointOptions() {
+        if (endpointOptions == null) {
+            endpointOptions = Collections.unmodifiableList(extractEndpointOptions(lines.get()));
+        }
+
+        return endpointOptions;
+    }
+
+    public List<String> getComponentOptions() {
+        if (endpointOptions == null) {
+            endpointOptions = Collections.unmodifiableList(extractComponentOptions(lines.get()));
+        }
+
+        return endpointOptions;
+    }
+
+    public List<String> getConnectorOptions() {
+        if (connectorOptions == null) {
+            connectorOptions = Collections.unmodifiableList(extractConnectorOptions(lines.get()));
+        }
+
+        return connectorOptions;
+    }
+
     public DataType getInputDataType() {
         if (inputDataType == null) {
             String line = extractInputDataType(lines.get());
@@ -156,12 +183,12 @@ final class ConnectorModel {
     // Helpers
     // ***************************************
 
-    private List<String> findCamelConnectorJSonSchema() {
+    private List<String> findCamelConnectorJSonSchema(Class<?> componentClass) {
         LOGGER.debug("Finding camel-connector.json in classpath for connector: {}", componentName);
 
         Enumeration<URL> urls;
         try {
-            urls = ConnectorModel.class.getClassLoader().getResources("camel-connector.json");
+            urls = componentClass.getClassLoader().getResources("camel-connector.json");
         } catch (IOException e) {
             throw new IllegalArgumentException("Cannot open camel-connector.json in classpath for connector " + componentName);
         }
@@ -329,6 +356,85 @@ final class ConnectorModel {
                 key = StringHelper.removeLeadingAndEndingQuotes(key);
                 value = StringHelper.removeLeadingAndEndingQuotes(value);
                 answer.put(key, value);
+            }
+        }
+
+        return answer;
+    }
+
+    private List<String> extractComponentOptions(List<String> lines) {
+        List<String> answer = new ArrayList<>();
+
+        // extract the default options
+        for (String line : lines) {
+            line = line.trim();
+            if (line.startsWith("\"componentOptions\"")) {
+                int start = line.indexOf('[');
+                if (start == -1) {
+                    throw new IllegalStateException("Malformed camel-connector.json");
+                }
+
+                int end = line.indexOf(']', start);
+                if (end == -1) {
+                    throw new IllegalStateException("Malformed camel-connector.json");
+                }
+
+                line = line.substring(start + 1, end).trim();
+                for (String option : line.split(",")) {
+                    answer.add(StringHelper.removeLeadingAndEndingQuotes(option));
+                }
+
+                break;
+            }
+        }
+
+        return answer;
+    }
+
+    private List<String> extractEndpointOptions(List<String> lines) {
+        List<String> answer = new ArrayList<>();
+
+        // extract the default options
+        for (String line : lines) {
+            line = line.trim();
+            if (line.startsWith("\"endpointOptions\"")) {
+                int start = line.indexOf('[');
+                if (start == -1) {
+                    throw new IllegalStateException("Malformed camel-connector.json");
+                }
+
+                int end = line.indexOf(']', start);
+                if (end == -1) {
+                    throw new IllegalStateException("Malformed camel-connector.json");
+                }
+
+                line = line.substring(start + 1, end).trim();
+                for (String option : line.split(",")) {
+                    answer.add(StringHelper.removeLeadingAndEndingQuotes(option));
+                }
+
+                break;
+            }
+        }
+
+        return answer;
+    }
+
+    private List<String> extractConnectorOptions(List<String> lines) {
+        List<String> answer = new ArrayList<>();
+
+        // extract the default options
+        boolean found = false;
+        for (String line : lines) {
+            line = line.trim();
+            if (line.startsWith("\"connectorProperties\": {")) {
+                found = true;
+            } else if (line.startsWith("}")) {
+                found = false;
+            } else if (found) {
+                int pos = line.indexOf(':');
+                String key = line.substring(0, pos);
+                answer.add(StringHelper.removeLeadingAndEndingQuotes(key.trim()));
             }
         }
 

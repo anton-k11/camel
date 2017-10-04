@@ -40,11 +40,12 @@
   <modules>
     <module>parent</module>
     <module>spi-annotations</module>
+    <module>json-simple-ordered</module>
     <module>apt</module>
     <module>camel-route-parser</module>
+    <module>swagger-rest-dsl-generator</module>
     <module>maven</module>
     <module>camel-manual</module>
-    <module>swagger-rest-dsl-generator</module>
   </modules>
 
   <!-- profiles>

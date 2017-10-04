@@ -22,6 +22,7 @@ import javax.mail.Session;
 import org.apache.camel.component.mail.AttachmentsContentTransferEncodingResolver;
 import org.apache.camel.component.mail.ContentTypeResolver;
 import org.apache.camel.component.mail.JavaMailSender;
+import org.apache.camel.spring.boot.ComponentConfigurationPropertiesCommon;
 import org.apache.camel.util.jsse.SSLContextParameters;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
@@ -33,7 +34,9 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
  */
 @Generated("org.apache.camel.maven.packaging.SpringBootAutoConfigurationMojo")
 @ConfigurationProperties(prefix = "camel.component.mail")
-public class MailComponentConfiguration {
+public class MailComponentConfiguration
+        extends
+            ComponentConfigurationPropertiesCommon {
 
     /**
      * Sets the Mail configuration
@@ -300,6 +303,11 @@ public class MailComponentConfiguration {
          * what content-type-encoding to use for attachments.
          */
         private AttachmentsContentTransferEncodingResolver attachmentsContentTransferEncodingResolver;
+        /**
+         * This option enables transparent MIME decoding and unfolding for mail
+         * headers.
+         */
+        private Boolean mimeDecodeHeaders = false;
 
         public JavaMailSender getJavaMailSender() {
             return javaMailSender;
@@ -590,6 +598,14 @@ public class MailComponentConfiguration {
         public void setAttachmentsContentTransferEncodingResolver(
                 AttachmentsContentTransferEncodingResolver attachmentsContentTransferEncodingResolver) {
             this.attachmentsContentTransferEncodingResolver = attachmentsContentTransferEncodingResolver;
+        }
+
+        public Boolean getMimeDecodeHeaders() {
+            return mimeDecodeHeaders;
+        }
+
+        public void setMimeDecodeHeaders(Boolean mimeDecodeHeaders) {
+            this.mimeDecodeHeaders = mimeDecodeHeaders;
         }
     }
 }

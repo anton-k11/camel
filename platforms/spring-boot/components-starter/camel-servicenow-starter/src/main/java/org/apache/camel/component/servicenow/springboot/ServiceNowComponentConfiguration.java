@@ -21,6 +21,7 @@ import javax.annotation.Generated;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.camel.component.servicenow.ServiceNowComponent;
 import org.apache.camel.component.servicenow.ServiceNowRelease;
+import org.apache.camel.spring.boot.ComponentConfigurationPropertiesCommon;
 import org.apache.camel.util.jsse.SSLContextParameters;
 import org.apache.cxf.configuration.security.ProxyAuthorizationPolicy;
 import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
@@ -35,8 +36,14 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
  */
 @Generated("org.apache.camel.maven.packaging.SpringBootAutoConfigurationMojo")
 @ConfigurationProperties(prefix = "camel.component.servicenow")
-public class ServiceNowComponentConfiguration {
+public class ServiceNowComponentConfiguration
+        extends
+            ComponentConfigurationPropertiesCommon {
 
+    /**
+     * The ServiceNow instance name
+     */
+    private String instanceName;
     /**
      * The ServiceNow default configuration
      */
@@ -66,6 +73,22 @@ public class ServiceNowComponentConfiguration {
      */
     private String oauthTokenUrl;
     /**
+     * The proxy host name
+     */
+    private String proxyHost;
+    /**
+     * The proxy port number
+     */
+    private Integer proxyPort;
+    /**
+     * Username for proxy authentication
+     */
+    private String proxyUserName;
+    /**
+     * Password for proxy authentication
+     */
+    private String proxyPassword;
+    /**
      * Enable usage of global SSL context parameters.
      */
     private Boolean useGlobalSslContextParameters = false;
@@ -75,6 +98,14 @@ public class ServiceNowComponentConfiguration {
      * placeholders.
      */
     private Boolean resolvePropertyPlaceholders = true;
+
+    public String getInstanceName() {
+        return instanceName;
+    }
+
+    public void setInstanceName(String instanceName) {
+        this.instanceName = instanceName;
+    }
 
     public ServiceNowConfigurationNestedConfiguration getConfiguration() {
         return configuration;
@@ -131,6 +162,38 @@ public class ServiceNowComponentConfiguration {
 
     public void setOauthTokenUrl(String oauthTokenUrl) {
         this.oauthTokenUrl = oauthTokenUrl;
+    }
+
+    public String getProxyHost() {
+        return proxyHost;
+    }
+
+    public void setProxyHost(String proxyHost) {
+        this.proxyHost = proxyHost;
+    }
+
+    public Integer getProxyPort() {
+        return proxyPort;
+    }
+
+    public void setProxyPort(Integer proxyPort) {
+        this.proxyPort = proxyPort;
+    }
+
+    public String getProxyUserName() {
+        return proxyUserName;
+    }
+
+    public void setProxyUserName(String proxyUserName) {
+        this.proxyUserName = proxyUserName;
+    }
+
+    public String getProxyPassword() {
+        return proxyPassword;
+    }
+
+    public void setProxyPassword(String proxyPassword) {
+        this.proxyPassword = proxyPassword;
     }
 
     public Boolean getUseGlobalSslContextParameters() {
@@ -242,6 +305,12 @@ public class ServiceNowComponentConfiguration {
          */
         private Boolean favorites;
         /**
+         * Set this parameter to true to retrieve the target record when using
+         * import set api. The import set result is then replaced by the target
+         * record
+         */
+        private Boolean retrieveTargetRecordOnImport = false;
+        /**
          * Set this parameter to true to return only scorecards for key
          * indicators.
          */
@@ -333,6 +402,18 @@ public class ServiceNowComponentConfiguration {
          * Password for proxy authentication
          */
         private String proxyPassword;
+        /**
+         * The date format used for Json serialization/deserialization
+         */
+        private String dateFormat = "yyyy-MM-dd";
+        /**
+         * The time format used for Json serialization/deserialization
+         */
+        private String timeFormat = "HH:mm:ss";
+        /**
+         * The date-time format used for Json serialization/deserialization
+         */
+        private String dateTimeFormat = "yyyy-MM-dd HH:mm:ss";
         private Map models;
         /**
          * Defines the response model
@@ -483,6 +564,15 @@ public class ServiceNowComponentConfiguration {
 
         public void setFavorites(Boolean favorites) {
             this.favorites = favorites;
+        }
+
+        public Boolean getRetrieveTargetRecordOnImport() {
+            return retrieveTargetRecordOnImport;
+        }
+
+        public void setRetrieveTargetRecordOnImport(
+                Boolean retrieveTargetRecordOnImport) {
+            this.retrieveTargetRecordOnImport = retrieveTargetRecordOnImport;
         }
 
         public Boolean getKey() {
@@ -637,6 +727,30 @@ public class ServiceNowComponentConfiguration {
 
         public void setProxyPassword(String proxyPassword) {
             this.proxyPassword = proxyPassword;
+        }
+
+        public String getDateFormat() {
+            return dateFormat;
+        }
+
+        public void setDateFormat(String dateFormat) {
+            this.dateFormat = dateFormat;
+        }
+
+        public String getTimeFormat() {
+            return timeFormat;
+        }
+
+        public void setTimeFormat(String timeFormat) {
+            this.timeFormat = timeFormat;
+        }
+
+        public String getDateTimeFormat() {
+            return dateTimeFormat;
+        }
+
+        public void setDateTimeFormat(String dateTimeFormat) {
+            this.dateTimeFormat = dateTimeFormat;
         }
 
         public Map getModels() {

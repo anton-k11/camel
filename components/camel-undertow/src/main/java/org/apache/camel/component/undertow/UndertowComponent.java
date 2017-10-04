@@ -31,6 +31,7 @@ import org.apache.camel.Processor;
 import org.apache.camel.Producer;
 import org.apache.camel.SSLContextParametersAware;
 import org.apache.camel.VerifiableComponent;
+import org.apache.camel.component.extension.ComponentVerifierExtension;
 import org.apache.camel.impl.DefaultComponent;
 import org.apache.camel.spi.Metadata;
 import org.apache.camel.spi.RestApiConsumerFactory;
@@ -67,14 +68,20 @@ public class UndertowComponent extends DefaultComponent implements RestConsumerF
     private UndertowHostOptions hostOptions;
 
     public UndertowComponent() {
+        this(null);
     }
 
     public UndertowComponent(CamelContext context) {
         super(context);
+
+        registerExtension(UndertowComponentVerifierExtension::new);
     }
 
     @Override
     protected Endpoint createEndpoint(String uri, String remaining, Map<String, Object> parameters) throws Exception {
+        // Sa ve a copy of the parameters.
+        Map<String, Object> healthCheckOptions = new HashMap<>(parameters);
+
         URI uriHttpUriAddress = new URI(UnsafeUriCharactersEncoder.encodeHttpURI(remaining));
         URI endpointUri = URISupport.createRemainingURI(uriHttpUriAddress, parameters);
 
@@ -198,9 +205,22 @@ public class UndertowComponent extends DefaultComponent implements RestConsumerF
             }
         }
 
+        boolean explicitOptions = true;
+        // must use upper case for restrict
+        String restrict = verb.toUpperCase(Locale.US);
+        // allow OPTIONS in rest-dsl to allow clients to call the API and have responses with ALLOW headers
+        if (!restrict.contains("OPTIONS")) {
+            restrict += ",OPTIONS";
+            // this is not an explicit OPTIONS path in the rest-dsl
+            explicitOptions = false;
+        }
+
         boolean cors = config.isEnableCORS();
         if (cors) {
             // allow HTTP Options as we want to handle CORS in rest-dsl
+            map.put("optionsEnabled", "true");
+        } else if (explicitOptions) {
+            // the rest-dsl is using OPTIONS
             map.put("optionsEnabled", "true");
         }
 
@@ -208,16 +228,11 @@ public class UndertowComponent extends DefaultComponent implements RestConsumerF
 
         String url;
         if (api) {
-            url = "undertow:%s://%s:%s/%s?matchOnUriPrefix=true&httpMethodRestrict=%s";
-        } else {
             url = "undertow:%s://%s:%s/%s?httpMethodRestrict=%s";
+        } else {
+            url = "undertow:%s://%s:%s/%s?matchOnUriPrefix=false&httpMethodRestrict=%s";
         }
 
-        // must use upper case for restrict
-        String restrict = verb.toUpperCase(Locale.US);
-        if (cors) {
-            restrict += ",OPTIONS";
-        }
         // get the endpoint
         url = String.format(url, scheme, host, port, path, restrict);
 
@@ -353,11 +368,8 @@ public class UndertowComponent extends DefaultComponent implements RestConsumerF
         this.hostOptions = hostOptions;
     }
 
-    /**
-     *
-     */
+    @Override
     public ComponentVerifier getVerifier() {
-        return new UndertowComponentVerifier(this);
+        return (scope, parameters) -> getExtension(ComponentVerifierExtension.class).orElseThrow(UnsupportedOperationException::new).verify(scope, parameters);
     }
-
 }

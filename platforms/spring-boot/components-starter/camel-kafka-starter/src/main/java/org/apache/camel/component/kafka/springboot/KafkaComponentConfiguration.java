@@ -19,6 +19,7 @@ package org.apache.camel.component.kafka.springboot;
 import java.util.concurrent.ExecutorService;
 import javax.annotation.Generated;
 import org.apache.camel.spi.StateRepository;
+import org.apache.camel.spring.boot.ComponentConfigurationPropertiesCommon;
 import org.apache.camel.util.jsse.SSLContextParameters;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
@@ -31,7 +32,9 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
  */
 @Generated("org.apache.camel.maven.packaging.SpringBootAutoConfigurationMojo")
 @ConfigurationProperties(prefix = "camel.component.kafka")
-public class KafkaComponentConfiguration {
+public class KafkaComponentConfiguration
+        extends
+            ComponentConfigurationPropertiesCommon {
 
     /**
      * Allows to pre-configure the Kafka component with common options that the
@@ -57,6 +60,17 @@ public class KafkaComponentConfiguration {
      * Enable usage of global SSL context parameters.
      */
     private Boolean useGlobalSslContextParameters = false;
+    /**
+     * This options controls what happens when a consumer is processing an
+     * exchange and it fails. If the option is false then the consumer continues
+     * to the next message and processes it. If the option is true then the
+     * consumer breaks out and will seek back to offset of the message that
+     * caused a failure and then re-attempt to process this message. However
+     * this can lead to endless processing of the same message if its bound to
+     * fail every time eg a poison message. Therefore its recommended to deal
+     * with that for example by using Camel's error handler.
+     */
+    private Boolean breakOnFirstError = false;
     /**
      * Whether the component should resolve property placeholders on itself when
      * starting. Only properties which are of String type can use property
@@ -96,6 +110,14 @@ public class KafkaComponentConfiguration {
     public void setUseGlobalSslContextParameters(
             Boolean useGlobalSslContextParameters) {
         this.useGlobalSslContextParameters = useGlobalSslContextParameters;
+    }
+
+    public Boolean getBreakOnFirstError() {
+        return breakOnFirstError;
+    }
+
+    public void setBreakOnFirstError(Boolean breakOnFirstError) {
+        this.breakOnFirstError = breakOnFirstError;
     }
 
     public Boolean getResolvePropertyPlaceholders() {
@@ -202,6 +224,18 @@ public class KafkaComponentConfiguration {
          * values are: sync, async, or none. And sync is the default value.
          */
         private String autoCommitOnStop = "sync";
+        /**
+         * This options controls what happens when a consumer is processing an
+         * exchange and it fails. If the option is <tt>false</tt> then the
+         * consumer continues to the next message and processes it. If the
+         * option is <tt>true</tt> then the consumer breaks out, and will seek
+         * back to offset of the message that caused a failure, and then
+         * re-attempt to process this message. However this can lead to endless
+         * processing of the same message if its bound to fail every time, eg a
+         * poison message. Therefore its recommended to deal with that for
+         * example by using Camel's error handler.
+         */
+        private Boolean breakOnFirstError = false;
         /**
          * URL of the Kafka brokers to use. The format is
          * host1:port1,host2:port2, and the list can be a subset of brokers or a
@@ -344,6 +378,12 @@ public class KafkaComponentConfiguration {
          * xhtml</a>
          */
         private String saslMechanism = "GSSAPI";
+        /**
+         * Expose the kafka sasl.jaas.config parameter Example:
+         * org.apache.kafka.common.security.plain.PlainLoginModule required
+         * username="USERNAME" password="PASSWORD";
+         */
+        private String saslJaasConfig;
         /**
          * Protocol used to communicate with brokers. Currently only PLAINTEXT
          * and SSL are supported.
@@ -638,6 +678,15 @@ public class KafkaComponentConfiguration {
          * class cast exception in runtime
          */
         private String interceptorClasses;
+        /**
+         * If set to 'true' the producer will ensure that exactly one copy of
+         * each message is written in the stream. If 'false', producer retries
+         * may write duplicates of the retried message in the stream. If set to
+         * true this option will require max.in.flight.requests.per.connection
+         * to be set to 1 and retries cannot be zero and additionally acks must
+         * be set to 'all'.
+         */
+        private Boolean enableIdempotence = false;
 
         public String getGroupId() {
             return groupId;
@@ -765,6 +814,14 @@ public class KafkaComponentConfiguration {
 
         public void setAutoCommitOnStop(String autoCommitOnStop) {
             this.autoCommitOnStop = autoCommitOnStop;
+        }
+
+        public Boolean getBreakOnFirstError() {
+            return breakOnFirstError;
+        }
+
+        public void setBreakOnFirstError(Boolean breakOnFirstError) {
+            this.breakOnFirstError = breakOnFirstError;
         }
 
         public String getBrokers() {
@@ -961,6 +1018,14 @@ public class KafkaComponentConfiguration {
 
         public void setSaslMechanism(String saslMechanism) {
             this.saslMechanism = saslMechanism;
+        }
+
+        public String getSaslJaasConfig() {
+            return saslJaasConfig;
+        }
+
+        public void setSaslJaasConfig(String saslJaasConfig) {
+            this.saslJaasConfig = saslJaasConfig;
         }
 
         public String getSecurityProtocol() {
@@ -1282,6 +1347,14 @@ public class KafkaComponentConfiguration {
 
         public void setInterceptorClasses(String interceptorClasses) {
             this.interceptorClasses = interceptorClasses;
+        }
+
+        public Boolean getEnableIdempotence() {
+            return enableIdempotence;
+        }
+
+        public void setEnableIdempotence(Boolean enableIdempotence) {
+            this.enableIdempotence = enableIdempotence;
         }
     }
 }

@@ -33,6 +33,11 @@
 
   <dependencies>
 
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-catalog</artifactId>
+    </dependency>
+
     <!-- we extend this existing maven plugin -->
     <dependency>
       <groupId>org.apache.maven.plugins</groupId>
@@ -83,6 +88,13 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-autoconfigure</artifactId>
       <version>${spring-boot-version}</version>
+    </dependency>
+
+    <!-- guava for some word wrap helper -->
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>${google-guava-version}</version>
     </dependency>
 
     <!-- logging -->

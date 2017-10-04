@@ -91,6 +91,21 @@
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
     </dependency>
+    <!-- json schema -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.jaxrs</groupId>
+      <artifactId>jackson-jaxrs-json-provider</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.module</groupId>
+      <artifactId>jackson-module-jsonSchema</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>javax.validation</groupId>
+          <artifactId>validation-api</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
     <dependency>
       <groupId>com.thoughtworks.xstream</groupId>
       <artifactId>xstream</artifactId>
@@ -167,9 +182,21 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <version>${assertj-version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>com.googlecode.junit-toolbox</groupId>
       <artifactId>junit-toolbox</artifactId>
-      <version>2.2</version>
+      <version>${junit-toolbox-version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.squareup.okhttp3</groupId>
+      <artifactId>mockwebserver</artifactId>
+      <version>${squareup-okhttp3-version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -253,6 +280,27 @@ https://developer.salesforce.com/page/Force.com_Migration_Tool]]></message>
                     <resource>
                       <directory>${salesforce.component.root}</directory>
                       <include>test-salesforce-login.properties</include>
+                    </resource>
+                  </resources>
+                </configuration>
+              </execution>
+              <execution>
+                <id>set-connected-app-client-id</id>
+                <phase>generate-test-resources</phase>
+                <goals>
+                  <goal>copy-resources</goal>
+                </goals>
+                <configuration>
+                  <outputDirectory>${salesforce.component.root}/it/resources/salesforce/connectedApps</outputDirectory>
+                  <overwrite>true</overwrite>
+                  <filters>
+                    <filter>${salesforce.component.root}/test-salesforce-login.properties</filter>
+                  </filters>
+                  <resources>
+                    <resource>
+                      <directory>${salesforce.component.root}/it/resources/</directory>
+                      <include>CamelSalesforceIntegrationTests.connectedApp</include>
+                      <filtering>true</filtering>
                     </resource>
                   </resources>
                 </configuration>

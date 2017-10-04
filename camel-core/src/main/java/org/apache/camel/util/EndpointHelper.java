@@ -24,7 +24,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 import org.apache.camel.CamelContext;
@@ -52,7 +51,6 @@ public final class EndpointHelper {
 
     private static final Logger LOG = LoggerFactory.getLogger(EndpointHelper.class);
     private static final AtomicLong ENDPOINT_COUNTER = new AtomicLong(0);
-    private static final Pattern SYNTAX_PATTERN = Pattern.compile("(\\w+)");
 
     private EndpointHelper() {
         //Utility Class
@@ -323,9 +321,9 @@ public final class EndpointHelper {
     public static <T> T resolveReferenceParameter(CamelContext context, String value, Class<T> type, boolean mandatory) {
         String valueNoHash = StringHelper.replaceAll(value, "#", "");
         if (mandatory) {
-            return CamelContextHelper.mandatoryLookup(context, valueNoHash, type);
+            return CamelContextHelper.mandatoryLookupAndConvert(context, valueNoHash, type);
         } else {
-            return CamelContextHelper.lookup(context, valueNoHash, type);
+            return CamelContextHelper.lookupAndConvert(context, valueNoHash, type);
         }
     }
 

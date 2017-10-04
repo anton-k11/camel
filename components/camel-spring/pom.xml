@@ -32,7 +32,6 @@
   <packaging>jar</packaging>
 
   <properties>
-    <!-- use spring-all-version-range to support camel-spring-dm also -->
     <camel.osgi.import>
       !org.springframework.boot.*,
       !org.springframework.context.annotation.*;resolution:=optional,
@@ -41,6 +40,15 @@
       !org.apache.camel.component.event,
       !org.apache.camel.language.spel,
       !org.apache.camel.core.xml*,
+      org.apache.camel.model;${camel.osgi.import.strict.version},
+      org.apache.camel.model.cloud;${camel.osgi.import.strict.version},
+      org.apache.camel.model.config;${camel.osgi.import.strict.version},
+      org.apache.camel.model.dataformat;${camel.osgi.import.strict.version},
+      org.apache.camel.model.language;${camel.osgi.import.strict.version},
+      org.apache.camel.model.loadbalancer;${camel.osgi.import.strict.version},
+      org.apache.camel.model.rest;${camel.osgi.import.strict.version},
+      org.apache.camel.model.transformer;${camel.osgi.import.strict.version},
+      org.apache.camel.model.validator;${camel.osgi.import.strict.version},
       org.apache.camel.*;${camel.osgi.import.strict.version},
       org.springframework*;version="${spring-all-version-range}",
       org.osgi.service.event;resolution:=optional,
@@ -103,6 +111,11 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>org.awaitility</groupId>
+      <artifactId>awaitility</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context-support</artifactId>
       <scope>test</scope>
@@ -155,14 +168,9 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>xmlunit</groupId>
-      <artifactId>xmlunit</artifactId>
+      <groupId>org.xmlunit</groupId>
+      <artifactId>xmlunit-core</artifactId>
       <version>${xmlunit-version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
       <scope>test</scope>
     </dependency>
 
@@ -183,6 +191,12 @@
       <groupId>cglib</groupId>
       <artifactId>cglib</artifactId>
       <version>${cglib-version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <version>${assertj-version}</version>
       <scope>test</scope>
     </dependency>
 
@@ -655,9 +669,22 @@
                   <goal>run</goal>
                 </goals>
               </execution>
+              <execution>
+                <id>cpy-schema</id>
+                <phase>process-test-sources</phase>
+                <configuration>
+                  <target>
+                    <echo>Copying XSD schema to be included in JAR</echo>
+                    <move file="${project.basedir}/schema1.xsd" tofile="${project.build.directory}/schema/camel-spring.xsd" />
+                    <delete file="${project.basedir}/schema2.xsd"/>
+                  </target>
+                </configuration>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+              </execution>
             </executions>
           </plugin>
-
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>exec-maven-plugin</artifactId>
@@ -674,27 +701,6 @@
               <executable>schemagen</executable>
               <commandlineArgs>-cp %classpath ${schema.source.files}</commandlineArgs>
             </configuration>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-antrun-plugin</artifactId>
-            <version>1.8</version>
-            <executions>
-              <execution>
-                <id>cpy-schema</id>
-                <phase>generate-test-sources</phase>
-                <configuration>
-                  <target>
-                    <echo>Copying XSD schema to be included in JAR</echo>
-                    <move file="${project.basedir}/schema1.xsd" tofile="${project.build.directory}/schema/camel-spring.xsd" />
-                    <delete file="${project.basedir}/schema2.xsd"/>
-                  </target>
-                </configuration>
-                <goals>
-                  <goal>run</goal>
-                </goals>
-              </execution>
-            </executions>
           </plugin>
         </plugins>
       </build>

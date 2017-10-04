@@ -31,6 +31,7 @@ import org.apache.camel.component.netty4.NettyComponent;
 import org.apache.camel.component.netty4.NettyServerBootstrapFactory;
 import org.apache.camel.component.netty4.ServerInitializerFactory;
 import org.apache.camel.component.netty4.TextLineDelimiter;
+import org.apache.camel.spring.boot.ComponentConfigurationPropertiesCommon;
 import org.apache.camel.util.jsse.SSLContextParameters;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
@@ -43,7 +44,9 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
  */
 @Generated("org.apache.camel.maven.packaging.SpringBootAutoConfigurationMojo")
 @ConfigurationProperties(prefix = "camel.component.netty4")
-public class NettyComponentConfiguration {
+public class NettyComponentConfiguration
+        extends
+            ComponentConfigurationPropertiesCommon {
 
     /**
      * The thread pool size for the EventExecutorGroup if its in use. The
@@ -296,13 +299,13 @@ public class NettyComponentConfiguration {
          */
         private Boolean udpByteArrayCodec = false;
         /**
-         * This option allows producers to reuse the same Netty {@link Channel}
-         * for the lifecycle of processing the {@link Exchange} . This is
-         * useable if you need to call a server multiple times in a Camel route
-         * and want to use the same network connection. When using this the
-         * channel is not returned to the connection pool until the
-         * {@link Exchange} is done; or disconnected if the disconnect option is
-         * set to true.
+         * This option allows producers and consumers (in client mode) to reuse
+         * the same Netty {@link Channel} for the lifecycle of processing the
+         * {@link Exchange} . This is useful if you need to call a server
+         * multiple times in a Camel route and want to use the same network
+         * connection. When using this the channel is not returned to the
+         * connection pool until the {@link Exchange} is done; or disconnected
+         * if the disconnect option is set to true.
          * <p/>
          * The reused {@link Channel} is stored on the {@link Exchange} as an
          * exchange property with the key {@link NettyConstants#NETTY_CHANNEL}

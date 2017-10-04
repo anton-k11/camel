@@ -30,6 +30,7 @@
 
   <artifactId>examples</artifactId>
   <name>Camel :: Example</name>
+  <groupId>org.apache.camel.example</groupId>
   <description>Camel Examples</description>
   <packaging>pom</packaging>
 
@@ -51,14 +52,14 @@
     <module>camel-example-cdi-xml</module>
     <module>camel-example-cxf</module>
     <module>camel-example-cxf-blueprint</module>
-    <module>camel-example-cxf-osgi</module>
     <module>camel-example-cxf-proxy</module>
     <module>camel-example-cxf-tomcat</module>
     <module>camel-example-console</module>
-    <module>camel-example-etl</module>
     <module>camel-example-ftp</module>
+    <module>camel-example-google-pubsub</module>
     <module>camel-example-guice-jms</module>
     <module>camel-example-groovy</module>
+    <module>camel-example-grpc-kubernetes</module>
     <module>camel-example-hazelcast-kubernetes</module>
     <module>camel-example-hystrix</module>
     <module>camel-example-java8</module>
@@ -75,7 +76,6 @@
     <module>camel-example-mybatis</module>
     <module>camel-example-netty-http</module>
     <module>camel-example-opentracing</module>
-    <module>camel-example-osgi-rmi</module>
     <module>camel-example-pojo-messaging</module>
     <module>camel-example-reactive-streams</module>
     <module>camel-example-reload</module>
@@ -94,12 +94,20 @@
     <module>camel-example-splunk</module>
     <module>camel-example-spring</module>
     <module>camel-example-spring-boot</module>
+    <module>camel-example-spring-boot-activemq</module>
+    <module>camel-example-spring-boot-clustered-route-controller</module>
     <module>camel-example-spring-boot-geocoder</module>
+    <module>camel-example-spring-boot-grpc</module>
+    <module>camel-example-spring-boot-health-checks</module>
+    <module>camel-example-spring-boot-infinispan</module>
     <module>camel-example-spring-boot-live-reload</module>
+    <module>camel-example-spring-boot-master</module>
     <module>camel-example-spring-boot-metrics</module>
+    <module>camel-example-spring-boot-pojo</module>
     <module>camel-example-spring-boot-rest-jpa</module>
     <module>camel-example-spring-boot-rest-swagger</module>
     <module>camel-example-spring-boot-servicecall</module>
+    <module>camel-example-spring-boot-supervising-route-controller</module>
     <module>camel-example-spring-cloud-servicecall</module>
     <module>camel-example-spring-javaconfig</module>
     <module>camel-example-spring-jms</module>
@@ -108,7 +116,6 @@
     <module>camel-example-spring-security</module>
     <module>camel-example-ssh</module>
     <module>camel-example-ssh-security</module>
-    <module>camel-example-sql</module>
     <module>camel-example-sql-blueprint</module>
     <module>camel-example-swagger-cdi</module>
     <module>camel-example-swagger-osgi</module>
@@ -143,6 +150,14 @@
       </resource>
     </resources>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>

@@ -139,9 +139,6 @@ public class HystrixProcessorCommand extends HystrixCommand {
             // and copy the result
             ExchangeHelper.copyResults(exchange, copy);
 
-            // is fallback enabled
-            Boolean fallbackEnabled = getProperties().fallbackEnabled().get();
-
             // execution exception must take precedence over exchange exception
             // because hystrix may have caused this command to fail due timeout or something else
             if (hystrixExecutionException != null) {

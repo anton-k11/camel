@@ -40,7 +40,7 @@
 
     <camel.osgi.export.pkg>${componentPackage}</camel.osgi.export.pkg>
     <camel.osgi.private.pkg>${outPackage}</camel.osgi.private.pkg>
-    <maven.exe.file.extension></maven.exe.file.extension>
+    <maven.exe.file.extension />
   </properties>
 
   <dependencies>
@@ -119,7 +119,6 @@
     <dependency>
       <groupId>org.apache.cxf</groupId>
       <artifactId>cxf-rt-frontend-jaxrs</artifactId>
-      <version>${cxf-version}</version>
       <scope>test</scope>
     </dependency>
 
@@ -179,6 +178,7 @@
                   </extraOptions>
                   <nullableOptions>
                     <nullableOption>queryParams</nullableOption>
+                    <nullableOption>endpointHttpHeaders</nullableOption>
                   </nullableOptions>
                 </api>
               </apis>

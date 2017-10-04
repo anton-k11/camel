@@ -55,6 +55,7 @@ import org.apache.camel.component.salesforce.api.utils.JsonUtils;
 import org.apache.camel.component.salesforce.api.utils.Version;
 import org.apache.camel.component.salesforce.internal.PayloadFormat;
 import org.apache.camel.component.salesforce.internal.SalesforceSession;
+import org.apache.camel.util.IOHelper;
 import org.apache.camel.util.ObjectHelper;
 import org.eclipse.jetty.client.api.ContentProvider;
 import org.eclipse.jetty.client.api.Request;
@@ -239,6 +240,9 @@ public class DefaultCompositeApiClient extends AbstractClientBase implements Com
     }
 
     <T> Optional<T> tryToReadResponse(final Class<T> expectedType, final InputStream responseStream) {
+        if (responseStream == null) {           
+            return Optional.empty();
+        } 
         try {
             if (format == PayloadFormat.JSON) {
                 return Optional.of(fromJson(expectedType, responseStream));
@@ -250,10 +254,7 @@ public class DefaultCompositeApiClient extends AbstractClientBase implements Com
             LOG.warn("Unable to read response from the Composite API", e);
             return Optional.empty();
         } finally {
-            try {
-                responseStream.close();
-            } catch (final IOException ignored) {
-            }
+            IOHelper.close(responseStream);
         }
     }
 

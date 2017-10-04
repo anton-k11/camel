@@ -37,7 +37,9 @@ public class ComponentModel {
     private String groupId;
     private String artifactId;
     private String version;
-    private final List<ComponentOptionModel> componentOptions = new ArrayList<ComponentOptionModel>();
+    private final List<ComponentOptionModel> componentOptions = new ArrayList<>();
+    private final List<EndpointOptionModel> endpointOptions = new ArrayList<>();
+    private final List<ConnectorOptionModel> connectorOptions = new ArrayList<>();
 
     public String getKind() {
         return kind;
@@ -173,6 +175,22 @@ public class ComponentModel {
 
     public void addComponentOption(ComponentOptionModel option) {
         componentOptions.add(option);
+    }
+
+    public List<EndpointOptionModel> getEndpointOptions() {
+        return endpointOptions;
+    }
+
+    public void addEndpointOption(EndpointOptionModel option) {
+        endpointOptions.add(option);
+    }
+
+    public List<ConnectorOptionModel> getConnectorOptions() {
+        return connectorOptions;
+    }
+
+    public void addConnectorOption(ConnectorOptionModel option) {
+        connectorOptions.add(option);
     }
 
     public String getShortJavaType() {
